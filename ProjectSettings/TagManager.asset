@@ -8,11 +8,11 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Cullable Object
   - Water
   - UI
   - Ground
-  - 
+  - Cullable NPCs
   - 
   - 
   - 
