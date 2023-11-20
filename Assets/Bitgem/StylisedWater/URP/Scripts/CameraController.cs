@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 
+// This script will be mainly, if not only, used for combat.
 public class CameraController : MonoBehaviour
 {
     // Grabs the player's position.
@@ -21,10 +22,15 @@ public class CameraController : MonoBehaviour
     {
         isTurning = false;
         
+        // Used to dictate layers that should be culled.
+        float[] distanceLayers = new float[32];
+        distanceLayers[3] = 40;
+        distanceLayers[7] = 40;
+        GetComponent<Camera>().layerCullDistances = distanceLayers;
+
         // Possibly removing the SerializeField above and setting it to the below as a static.
         // For now, until I'm done testing, this will be here as a comment.
         // rotationSpeed = 300f;
-
         previousRotationAngle = transform.eulerAngles.y;
         changeInRotation = 0;
         totalRotationCompleted = 0;
