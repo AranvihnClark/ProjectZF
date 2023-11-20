@@ -6,8 +6,10 @@ using UnityEngine.Scripting.APIUpdating;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] Rigidbody rb;
+    // [SerializeField] Rigidbody rb;
     [SerializeField] private float playerSpeed = 10f;
+    [SerializeField] private float rotationTime = 0.1f;
+    float turnSmoothVelocity;
 
     // Basic player variables.
     private bool onGround = true;
@@ -30,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        // rb = GetComponent<Rigidbody>();
     }
 
     private void Update()
@@ -41,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 MoveRelativeToCamera();
             }
-            rb.velocity = new UnityEngine.Vector3(0, rb.velocity.y, 0);
+            // rb.velocity = new UnityEngine.Vector3(0, rb.velocity.y, 0);
         }
     }
 
@@ -61,11 +63,31 @@ public class PlayerMovement : MonoBehaviour
         right = right.normalized;
 
         // We then 'create' direction-relative vectors as 'inputs'
-        relativeForwardInput = xInput * forward * (Time.deltaTime * playerSpeed);
-        relativeRightInput = zInput * right * (Time.deltaTime * playerSpeed);
+            relativeForwardInput = xInput * forward * (Time.deltaTime * playerSpeed);
+            relativeRightInput = zInput * right * (Time.deltaTime * playerSpeed);
 
         // Then we apply the camera relative movements
         cameraRelativePlayerMovement = relativeForwardInput + relativeRightInput;
+        
+        // Character rotation.
+        float targetAngle = (Mathf.Atan2(cameraRelativePlayerMovement.x, cameraRelativePlayerMovement.z) * Mathf.Rad2Deg) - 90f;
+        float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, rotationTime);
+        if (cameraRelativePlayerMovement.magnitude >= 0.01f)
+        {
+            transform.rotation = UnityEngine.Quaternion.Euler(0f, angle, 0f);
+        }
+
         this.transform.Translate(cameraRelativePlayerMovement, Space.World);
     }
+/*
+    private void OnCollisionEnter(Collision collision)
+    {
+
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+
+    }
+*/
 }
