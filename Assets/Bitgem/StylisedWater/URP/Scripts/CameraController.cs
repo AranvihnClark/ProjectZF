@@ -24,8 +24,9 @@ public class CameraController : MonoBehaviour
         
         // Used to dictate layers that should be culled.
         float[] distanceLayers = new float[32];
-        distanceLayers[3] = 40;
-        distanceLayers[7] = 40;
+        distanceLayers[3] = 100;
+        distanceLayers[6] = 100;
+        distanceLayers[7] = 100;
         GetComponent<Camera>().layerCullDistances = distanceLayers;
 
         // Possibly removing the SerializeField above and setting it to the below as a static.
